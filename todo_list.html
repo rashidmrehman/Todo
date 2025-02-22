@@ -1,1 +1,29 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="font-family: 'Arial', sans-serif; padding: 20px;">
+    <div class="container" style="max-width: 800px; margin: auto;">
+        <h1 style="color: #333;">To-Do List</h1>
+        <a href="{% url 'todo_create' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; color: white; display: inline-block; font-weight: 400; line-height: 1.5; text-align: center; vertical-align: middle; cursor: pointer; border: 1px solid transparent; padding: .375rem .75rem; font-size: 1rem; border-radius: .25rem; text-decoration: none; -webkit-user-select: none; -moz-user-select: none; user-select: none;">Create New Todo</a>
+        <ul class="list-group mt-3" style="margin-top: 1rem !important; padding-left: 0; margin-bottom: 0; border-radius: .25rem;">
+            {% for todo in todos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="margin-bottom: 10px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: flex !important; justify-content: space-between !important; align-items: center !important; position: relative; display: block; padding: .75rem 1.25rem; background-color: #fff; border: 1px solid rgba(0,0,0,.125);">
+                {{ todo.title }}
+                <div>
+                    <a href="{% url 'todo_update' todo.id %}" class="btn btn-sm btn-secondary" style="background-color: #6c757d; border-color: #6c757d; color: white; display: inline-block; font-weight: 400; line-height: 1.5; text-align: center; vertical-align: middle; cursor: pointer; border: 1px solid transparent; padding: .25rem .5rem; font-size: .875rem; border-radius: .2rem; text-decoration: none; -webkit-user-select: none; -moz-user-select: none; user-select: none;">Update</a>
+                    <a href="{% url 'todo_delete' todo.id %}" class="btn btn-sm btn-danger" style="background-color: #dc3545; border-color: #dc3545; color: white; display: inline-block; font-weight: 400; line-height: 1.5; text-align: center; vertical-align: middle; cursor: pointer; border: 1px solid transparent; padding: .25rem .5rem; font-size: .875rem; border-radius: .2rem; text-decoration: none; -webkit-user-select: none; -moz-user-select: none; user-select: none;">Delete</a>
+                    {% if todo.is_completed %}
+                        <span class="badge badge-success" style="background-color: #28a745; color: #fff; display: inline-block; padding: .25em .4em; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem;">Completed</span>
+                    {% endif %}
+                </div>
+            </li>
+            {% empty %}
+            <li class="list-group-item" style="position: relative; display: block; padding: .75rem 1.25rem; background-color: #fff; border: 1px solid rgba(0,0,0,.125);">No tasks yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
