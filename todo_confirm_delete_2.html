@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete Todo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="font-family: 'Arial', sans-serif; margin: 0; background: #e9ecef; color: #555; display: flex; justify-content: center; align-items: center; min-height: 100vh; animation: pulseBackground 10s ease-in-out infinite;">
+    <div style="max-width: 800px; margin: 50px auto; padding: 40px; background-color: rgba(255, 255, 255, 0.85); border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
+        <h1 style="color: #333; text-align: center; font-size: 2.5em; margin-bottom: 30px; text-shadow: 2px 2px 3px #ddd;">Confirm Delete</h1>
+        <p style="color: #555; text-align: center; font-size: 1.2em; margin-bottom: 30px;">Are you sure you want to delete "{{ todo.title }}"?</p>
+        <form method="post" style="display: flex; justify-content: center; gap: 20px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">Yes, Delete</button>
+            <a href="{% url 'todo_list' %}" class="btn btn-secondary" style="background-color: #6c757d; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">Cancel</a>
+        </form>
+    </div>
+    
+</body>
+</html>
