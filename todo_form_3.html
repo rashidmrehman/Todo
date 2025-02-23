@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form_type == 'Create' %}Create{% else %}Update{% endif %} Todo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="font-family: 'Arial', sans-serif; margin: 0; background: #111; color: #eee; display: flex; justify-content: center; align-items: center; min-height: 100vh; animation: starfield 60s linear infinite;">
+    <div style="max-width: 800px; padding: 40px; background-color: rgba(0, 0, 0, 0.75); border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.6); width: 90%; max-width: 600px;">
+        <h1 style="color: white; text-align: center; font-size: 2.5em; margin-bottom: 30px; text-shadow: 2px 2px 3px #333;">{% if form_type == 'Create' %}Create New{% else %}Update{% endif %} Task</h1>
+        <form method="post" style="display: flex; flex-direction: column; align-items: stretch;">
+            {% csrf_token %}
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+                <label for="{{ form.title.id_for_label }}" style="color: #ddd; font-size: 1.2em; margin-bottom: 8px; display: block;">Task Title:</label>
+                {{ form.title }}
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+                <label for="{{ form.description.id_for_label }}" style="color: #ddd; font-size: 1.2em; margin-bottom: 8px; display: block;">Description:</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group" style="margin-bottom: 20px; display: flex; align-items: center;">
+                {{ form.is_completed }}
+                <label for="{{ form.is_completed.id_for_label }}" style="color: #ddd; margin-left: 10px; font-size: 1.1em;">Completed</label>
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 30px;">
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; margin-right: 10px; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">{% if form_type == 'Create' %}Create{% else %}Update{% endif %} Task</button>
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary" style="background-color: #6c757d; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+   
+</body>
+</html>
