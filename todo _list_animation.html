@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List with Animated Background</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 3px #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <css-doodle grid="200x1">
+            :doodle {
+                @size: 250vmin;
+                overflow: hidden;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
+            @size: 100%;
+            @place-cell: center;
+            
+            ::before {
+                content: "";
+                @size: @r(3%, 6%);
+                border: 1px solid Black;
+                background: @p(none, Black, linear-gradient(to @p(bottom, left), @stripe(black, white 1px, black, white 1px, black, white 1px, black, white 1px, black, white 1px, black)));
+                border-radius: @p(0, 50%);
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingUpDown @r(2s, 6s) @r(1.5s) linear infinite alternate;
+            }
+            
+            ::after {
+                content: "";
+                height: @r(0.3%, 0.7%);
+                width: @r(2%, 5%);
+                background: Black;
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingStickAnim @r(2s, 6s) @r(1.5s) linear infinite alternate;
+                transform: translateX(300%);
+                transition: background 0.2s;
+            }
+            
+            :doodle(:hover)::after {
+                background: limegreen;
+            }
+            
+            @keyframes floatingUpDown {
+                100% {
+                    transform: translateY(-50%) rotateZ(@r(-5deg, 5deg));
+                }
+            }
+            
+            @keyframes floatingStickAnim {
+                100% {
+                    transform: translateX(-300%);
+                }
+            }
+        </css-doodle>
+    </div>
+
+    <div class="content">
+        <h1>My To-Do List</h1>
+        <a href="{% url 'todo_create' %}" class="btn btn-primary" style="background-color: #28a745; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: block; width: fit-content; margin: 20px auto; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">Create New Task</a>
+        <ul class="list-group" style="padding-left: 0; list-style-type: none;">
+            {% for todo in todos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="margin-bottom: 15px; padding: 15px; background-color: rgba(255, 255, 255, 0.95); border: 1px solid #ddd; border-radius: 10px; box-shadow: 3px 3px 5px rgba(0,0,0,0.05);">
+                <div style="display: flex; align-items: center;">
+                    <input type="checkbox" style="margin-right: 15px; transform: scale(1.2); cursor: pointer;">
+                    <span style="font-size: 1.1em; color: #555;">{{ todo.title }}</span>
+                </div>
+                <div>
+                    <a href="{% url 'todo_update' todo.id %}" class="btn btn-sm btn-secondary" style="background-color: #007bff; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; margin-right: 5px;">Update</a>
+                    <a href="{% url 'todo_delete' todo.id %}" class="btn btn-sm btn-danger" style="background-color: #dc3545; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold;">Delete</a>
+                    {% if todo.is_completed %}
+                    <span class="badge badge-success" style="background-color: #6c757d; color: #fff; padding: 5px 10px; border-radius: 15px; font-size: 0.8em; margin-left: 5px;">Completed</span>
+                    {% endif %}
+                </div>
+            </li>
+            {% empty %}
+            <li class="list-group-item" style="padding: 15px; background-color: rgba(255, 255, 255, 0.95); border: 1px solid #ddd; border-radius: 10px; box-shadow: 3px 3px 5px rgba(0,0,0,0.05);">No tasks yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.14.2/css-doodle.min.js'></script>
+    <script>
+        const doodle = document.querySelector('css-doodle');
+    
+      document.addEventListener("click", () => {
+        doodle.update();
+       })
+      </script>
+</body>
+</html>
