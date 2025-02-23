@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form_type == 'Create' %}Create{% else %}Update{% endif %} Todo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+        }
+
+        .animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+        .form-container {
+            max-width: 800px;
+            padding: 40px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            width: 90%;
+            max-width: 600px;
+            z-index: 1;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 3px #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation-container">
+        <css-doodle grid="200x1">
+            :doodle {
+                @size: 250%;
+                overflow: hidden;
+            }
+
+            @size: 100%;
+            @place-cell: center;
+
+            ::before{
+                content: "";
+                @size: @r(5%);
+                border: 1px solid white;
+                background: @p(none, white, linear-gradient(to @p(bottom, left), @stripe(black, white 1px, black, white 1px, black, white 1px, black, white 1px, black, white 1px, black)));
+                border-radius: @p(0, 50%);
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingUpDown @r(1.5s, 5s) @r(1.5s) linear infinite alternate; 
+            }
+
+            ::after {
+                content: "";
+                height: @r(0.5%);
+                width: @r(1.5%, 7%);
+                background: white;
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingStickAnim @r(1.5s, 5s) @r(1.5s) linear infinite alternate; 
+                transform: translateX(300%);
+                transition: background 0.2s;
+            }
+
+            :doodle(:hover)::after{
+                background: limegreen;
+            }
+
+            @keyframes floatingUpDown {
+                100% {
+                    transform: translateY(-50%) rotateZ(@r(-5deg, 5deg));
+                }
+            }
+
+            @keyframes floatingStickAnim {
+                100% {
+                    transform: translateX(-300%);
+                }
+            }
+        </css-doodle>
+    </div>
+
+    <div class="form-container">
+        <h1>{% if form_type == 'Create' %}Create New{% else %}Update{% endif %} Task</h1>
+        <form method="post" style="display: flex; flex-direction: column; align-items: stretch;">
+            {% csrf_token %}
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+                <label for="{{ form.title.id_for_label }}" style="color: #ddd; font-size: 1.2em; margin-bottom: 8px; display: block;">Task Title:</label>
+                {{ form.title }}
+            </div>
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+                <label for="{{ form.description.id_for_label }}" style="color: #ddd; font-size: 1.2em; margin-bottom: 8px; display: block;">Description:</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group" style="margin-bottom: 20px; display: flex; align-items: center;">
+                {{ form.is_completed }}
+                <label for="{{ form.is_completed.id_for_label }}" style="color: #ddd; margin-left: 10px; font-size: 1.1em;">Completed</label>
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 30px;">
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; margin-right: 10px; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">{% if form_type == 'Create' %}Create{% else %}Update{% endif %} Task</button>
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary" style="background-color: #6c757d; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.14.2/css-doodle.min.js'></script>
+    <script>
+        const doodle = document.querySelector('css-doodle');
+        document.addEventListener("click", () => {
+            doodle.update();
+        });
+    </script>
+</body>
+</html>
