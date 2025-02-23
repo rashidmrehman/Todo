@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete Todo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .center-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .content-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation-container">
+        <css-doodle grid="300x1">
+            :doodle {
+                @size: 250vmin;
+                overflow: hidden;
+            }
+            @size: 100%;
+            @place-cell: center;
+            
+            ::before {
+                content: "";
+                @size: @r(5%);
+                border: 1px solid green;
+                background: @p(none, red, linear-gradient(to @p(bottom, left), @stripe(red, white 1px, black, white 1px, Blue, white 1px, black, white 1px, green, white 1px, black)));
+                border-radius: @p(0, 50%);
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingUpDown @r(1.5s, 5s) @r(1.5s) linear infinite alternate;
+            }
+            
+            ::after {
+                content: "";
+                height: @r(0.5%);
+                width: @r(1.5%, 7%);
+                background: Blue;
+                position: absolute;
+                top: @r(100%);
+                left: @r(100%);
+                animation: floatingStickAnim @r(1.5s, 5s) @r(1.5s) linear infinite alternate;
+                transform: translateX(300%);
+                transition: background 0.2s;
+            }
+            
+            :doodle(:hover)::after {
+                background: limegreen;
+            }
+            
+            @keyframes floatingUpDown {
+                100% {
+                    transform: translateY(-50%) rotateZ(@r(-5deg, 5deg));
+                }
+            }
+            
+            @keyframes floatingStickAnim {
+                100% {
+                    transform: translateX(-300%);
+                }
+            }
+        </css-doodle>
+    </div>
+
+    <div class="center-wrapper">
+        <div class="content-container">
+            <h1 style="color: #333; font-size: 2.5em; margin-bottom: 30px; text-shadow: 2px 2px 3px #ddd;">Confirm Delete</h1>
+            <p style="color: #555; font-size: 1.2em; margin-bottom: 30px;">Are you sure you want to delete "{{ todo.title }}"?</p>
+            <form method="post" style="display: flex; justify-content: center; gap: 20px;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">Yes, Delete</button>
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary" style="background-color: #6c757d; border: none; color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; text-decoration: none; font-weight: bold; transition: background-color 0.3s, color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.14.2/css-doodle.min.js'></script>
+    <script>
+        const doodle = document.querySelector('css-doodle');
+        document.addEventListener("click", () => {
+            doodle.update();
+        });
+    </script>
+</body>
+</html>
